@@ -495,8 +495,7 @@ tmb %>%
   summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days., na.rm = TRUE))
 
 ```
-
-
+CHEATSHEET: https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf
 
 7. Breve análisis estadístico
 =============================
