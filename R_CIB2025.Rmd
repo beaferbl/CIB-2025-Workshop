@@ -1,0 +1,551 @@
+---
+title: "Hands-on! Introducción al análisis de datos con R\n12 y 13 de febrero de 2025"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+fontsize: 12pt
+author:
+    - "Beatriz Fernández Blanco"
+    - "Maria Guaita Céspedes"
+header-includes: 
+  - \renewcommand{\and}{\\}    
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(RColorBrewer)
+library(ggplot2)
+library(heplots)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. ¿Por qué R?
+==================
+## 1.1 Un poco de historia...
+Conocer cómo nació R es interesante para comprender sus características. R es un lenguaje de programación creado por Ross Ihaka y Robert Gentleman en los años 90, que eran estadísticos en la Universidad de Auckland (Nueva Zelanda) y querían crear un material mejor para dar el curso de introducción a la estadística a sus alumnos. Así, crearon el lenguaje R, basado en el lenguaje S. R siempre ha sido un proyecto de uso libre desde junio de 1995. El hecho de que fuera creado por estadísticos y no por ingenieros para el desarrollo de software como pasa con otros lenguajes de programación como C y Java, explica que uno de sus puntos fuertes sea la **interactividad** y la **visualización** de los datos.
+<p>
+![Logo de R y sus creadores](HistoriaR.png)
+<p>
+
+El mantenimiento y desarrollo de R es realizado por el **R Development Core Team**, un equipo de especialistas en ciencias computacionales y estadística provenientes de diferentes instituciones y lugares alrededor del mundo. Este equipo mantiene la versión ***base*** de R que, como su nombre indica, es sobre la cual se crean otras implementaciones de R así como los paquetes que expanden su funcionalidad.
+
+Referencias:  
+
+* https://bookdown.org/jboscomendoza/r-principiantes4/un-poco-de-historia.html
+* http://rafalab.dfci.harvard.edu/dsbook/getting-started.html#fn1
+* Ihaka, R., & Gentleman, R. (1996). R: a language for data analysis and graphics. Journal of computational and graphical statistics, 5(3), 299-314.  
+
+## 1.2 Ventajas de usar R
+En esta sesión vamos a conocer R como una herramienta para visualizar y analizar datos. Probablemente a estas alturas hayáis empleado algunos programas para el análisis de datos, como puede ser Excel para hacer gráficos y SPSS o Graphpad para la estadística. Veamos algunas ventajas que nos proporciona R:
+
+* Es de uso libre (forma parte del sistema GNU)
+* Se puede usar en diferentes sistemas operativos: Windows, Linux, Mac.
+* Hay una gran comunidad de usuarios de R activa y en continuo crecimiento y, por lo tanto, hay muchos recursos para aprender y resolver dudas.
+* Ofrece muchas utilidades en el análisis de datos, en especial en cuanto a interactividad y visualización.
+* En general, conocer un lenguaje de programación os facilitará el análisis de datos, sea cuál sea vuestro ámbito de especialización. Además, mejora otras habilidades transversales, como es el pensamiento lógico.
+
+
+
+2. Utilizar R en RStudio
+=============================
+En esta sesión trabajaremos en RStudio en la nube a través de Posit Cloud. Únicamente necesitamos registrarnos con una cuenta de correo electrónico. Si bien es práctico para los objetivos de esta sesión, tened en cuenta que Posit Cloud tiene unos recursos limitados en la versión libre, de los cuales destaca que solo permite 25 horas de uso al mes. Lo ideal es trabajar en local, por lo que os dejamos las instrucciones.
+
+### 2.1 Instalación de R y RStudio
+Todo el código y documentación de R está almacenado en **CRAN** (Comprehensive R Archive Network), que es una red de servidores alrededor del mundo. Es decir, CRAN es el sitio oficial a través del cual descargaremos R.
+<p>
+![Instalación de R](Figure3.png)
+<p>
+
+Una vez instalado R podemos abrir la consola para ver qué apariencia tiene. Aquí ya podríamos trabajar.
+<p>
+![La consola de R](Figure4.png)
+<p>
+Sin embargo, vamos a aprender a usar R dentro de RStudio, que es una interfaz que nos da muchísimas más funcionalidades que trabajar solo con la consola. La descarga de RStudio se realiza desde Posit.
+<p>
+![Instalación de RStudio](Figure5.png)
+<p>
+
+### 2.2 Exploramos RStudio
+Cuando abrimos RStudio vemos varios paneles, vamos a ver qué es cada uno de ellos.
+
+1. La consola
+A la izquierda tenemos la consola. La consola es el espacio donde R ejecuta las órdenes que le damos. El símbolo de "mayor que" se llama *prompt*, y significa que R está listo para que le demos una orden. En la consola podemos escribir la siguiente operación y pulsamos la tecla INTRO:
+```{r}
+3+2
+```
+
+2. Scripts
+Normalmente, en un análisis de datos necesitamos ejecutar varias tareas y finalmente querremos guardarlas para recuperar este análisis en un futuro. Esto no es posible en la consola; ya que las instrucciones que ejecutemos en ella sólo se almacenan durante la sesión de R. La forma de poder guardarlas es generando un **script** de R. Un script es un bloque de código. Vamos a crear nuestro primer script. Para ello, en la barra de herramientas pinchamos en File > New File > R Script. Hay otro tipo de documentos de R, como Markdown, muy útil para realizar informes. Vemos que se abre un nuevo panel como si fuera una hoja en blanco en la que iremos escribiendo nuestras líneas de código.
+Podemos ejecutar cualquiera de las operaciones anteriores:
+```{r}
+3+2
+```
+Para ejecutar el código que está escrito en el script pinchamos en "Run" o pulsamos la combinación de teclas CTRL+INTRO. Observad que el resultado se visualiza en la consola: tanto la instrucción como el resultado pero, ¡recordad!, lo que escribimos en la consola no se queda guardado. No tenemos que ejecutar línea por línea, sino que podemos ejecutar bloques de código seleccionando todas las líneas que queramos ejecutar.
+
+
+3. El entorno
+En la parte derecha superior hay otro panel con varias pestañas. Destacaremos dos:
+* En la pestaña "History" podemos consultar las instrucciones que hemos ido ejecutando. Si pinchamos en alguna de ellas vemos que se copia en la consola. Otra forma de recuperar instrucciones ya ejecutadas es, situándonos en la consola, usar las flechas de hacia arriba y hacia abajo del teclado.
+* En la pestaña "Environment" aparecerán todos los elementos que forman parte del entorno de R. El entorno es el conjunto de objetos que están activos durante nuestra sesión de R. Ahora mismo en nuestro entorno únicamente están las funcionalidades de R base, pero veremos cómo va creciendo a lo largo de la sesión.
+
+
+4. Gráficos y otros
+En la parte derecha inferior aparece otro panel c on varias pestañas. Destacaremos tres:
+* Files. Aquí podemos navegar por las diferentes carpetas de nuestro ordenador.
+* Plots. Aquí se visualizan los gráficos que generamos.
+* Help. En esta pestaña obtendremos ayuda de R si se la pedimos.
+
+
+
+3. R como calculadora
+=====================
+El uso más sencillo de R es como calculadora. Aquí tenemos algunas operaciones básicas.
+```{r}
+3+2 # suma
+3-2 # resta
+3*2 # multiplicación
+3/2 # división con decimales
+3%/%2 # división entera
+3**2 # potencia
+3^2 # potencia
+```
+
+4. Objetos en R
+===============
+Hasta ahora hemos visto el uso de R como calculadora. Sin embargo, las instrucciones que tendremos que ejecutar en un análisis de datos serán muchas otras: importar el conjunto de datos, filtrarlo, hacer operaciones con las variables de nuestro interés, hacer un gráfico, etc. Por ello, debemos conocer cómo interpreta y almacena R la información. 
+
+
+### 4.1 Concepto de variable
+En primer lugar, tenemos que recordar que las instrucciones que se ejecutan en la consola no se guardan, pero necesitamos que R la recuerde y la tengamos accesible para seguir operando sobre ella.
+
+Por ejemplo, hasta ahora hemos realizado operaciones sencillas, pero si pensamos en hacer varias operaciones, seguramente nos interese guardar el resultado de algunas de ellas. Podemos asignar el resultado 3+2 a una variable que se llame "a". La asignación de valores a una variable se puede hacer con la combinación "<-", como si fuera una flecha, o con el signo "=". Por convenio se prefiere la primera.
+Probad a ejecutar este código y veréis cómo quedan asignado el valor 5 a la variable "a". En R no importa si ponemos espacio entre la variable y su valor, lo que puede ser distinto en otros lenguajes. Lo que sí importa es si escribimos un espacio entre "<" y "-", ya que R interpreta otra cosa... Cada vez que hay un espacio, R interpreta que hay un elemento distinto.
+
+
+```{r}
+a <- 3+2
+a=3+2 
+a < -3 # ¡OJO!
+```
+Definir una variable es la forma en que R se guarda la información para tenerla disponible durante el rato que estamos trabajando en nuestro proyecto. Fijaos en el panel superior derecho: la variable que hemos creado ahora aparece en la pestaña "environment". El "environment" o **entorno** es el conjunto de variables que están activos en R durante nuestra sesión. Podemos eliminar las variables del entorno pinchando en el símbolo de la escoba. 
+
+Las variables no tienen por qué ser números, también pueden ser palabras.
+```{r}
+b <- "Hola"
+c <- "Adios"
+```
+
+
+Las variables se pueden sobreescribir y reasignarles otro valor.
+```{r}
+c<-4
+```
+Podemos nombrar a las variables como queramos pero teniendo en cuenta algunas reglas:
+
+* **NUNCA** debemos nombrar una variable con un nombre de una variable que ya exista en R. Por ejemplo, no sería apropiado crear la variable sum<-2+3, porque sum() es una función que existe en R y podemos crear conflictos. Ante la duda podemos ejecutar el comando help() para consultar si existe una variable, (help(sum)); si no nos devuelve nada entonces es que esa variable no está predefinida en R.
+* Las variables **no contienen espacios** porque si no R las interpretará como dos objetos distintos.
+* Por convención se escriben en **minúscula** y donde querríamos poner un espacio pondremos un guión bajo (o un punto). Estas convenciones pueden ser distintas en otros lenguajes de programación.
+* Intentad que los nombres de vuestras variables sean **representativos** de su significado, tanto por facilitaros vuestro trabajo como por si lo lee otra persona. Puede que creéis muchas variables y necesitaréis saber qué es cada una de ellas, sobre todo si volvéis a mirar vuestro script pasado un tiempo.
+
+
+
+
+
+### 4.2 Concepto de objeto
+La información que almacenamos en variables puede ser de distinto tipo. R tiene una idea preconcebida del tipo de información con el que va a trabajar. A cada tipo de información se le llama objeto. Cada objeto tiene asociadas una serie de operaciones o instrucciones que se le pueden aplicar. Cualquier tipo de objeto se puede asignar a una variable. Existen diferentes tipos de objetos en R base: vectores, listas, matrices, conjuntos de datos,... y otros objetos que son propios de determinados paquetes.
+Es difícil decidir qué tipo de objeto comenzar a explicar primero porque muchas veces la explicación de uno depende de otro. Normalmente se comienza por los vectores porque son el tipo de objeto más sencillo. Sin embargo, iremos en el orden que nos parece más didáctico a favor de esta sesión.
+
+### Funciones (*function*)
+En primer lugar, queremos que sepáis que R cuenta con funciones para poder trabajar con otro tipo de objetos. Las funciones son objetos que podemos ver como una máquina a la que damos unos datos y nos devuelve un resultado. Por ejemplo, para obtener la raíz cuadrada de 2 podemos emplear la función sqrt()
+```{r}
+sqrt(2)
+```
+Iremos viendo poco a poco varias funciones, pero nos gustaría resaltar dos por su utilidad:
+* La función class() nos dice el tipo de objeto. Como hemos dicho, cada tipo de objeto en R lleva asociadas unas operaciones que se pueden realizar y otras que no. A veces obtenemos errores porque estamos intentando aplicar una operación no permitida. Si sabemos el tipo de objeto con el que estamos trabajando, nos daremos cuenta de qué podemos y qué no podemos aplicarle. Si le preguntamos a R qué tipo de objeto es sqrt, nos dirá que es una función. Quizás ahora no le veáis la utilidad, pero hay clases de objetos más complicados y ocasiones en que tras muchas líneas de código ya no se recuerda de qué tipo son algunas variables.
+```{r}
+class(sqrt)
+```
+* La función help() nos da información de las funciones. Si le pedimos ayuda sobre la función sqrt, vemos que nos dice que está implementada en R base y que calcula la raíz cuadrada. Además, nos informa de qué tipo de objeto podemos introducir como entrada y otros parámetros que se puedan modificar, así como ejemplos de cómo usarla.
+```{r}
+help(sqrt)
+```
+Nosotros también podríamos crear nuestras propias funciones, aunque esto se escapa del objetivo de esta sesión.
+
+
+### Vectores (*numeric*, *character*)
+Los vectores son objetos en los que podemos almacenar más de un valor, tanto números (*numeric*) como caracteres (*character*). Los vectores se crean con la función c(), que significa concatenar, separando los elementos con una coma.
+```{r}
+numeros <- c(3,2,5,10,1,12)
+arboles<-c("pino","castaño", "manzano", "roble")
+```
+Los valores de un vector son del mismo tipo. Por ejemplo, si creo un vector que tiene números y caracteres, R interpreta los números como caracteres.
+```{r}
+numeros.caracteres<-c(1,2,"pino","castaño")
+class(numeros.caracteres)
+```
+
+Para acceder a los elementos de un vector empleamos los corchetes. Los elementos en R empiezan a contarse desde el 1 (otros lenguajes empiezan en 0). Así accedemos al segundo elemento:
+```{r}
+arboles[2]
+```
+
+Este índice que R reconoce lo podemos usar para ordenar los datos. Vamos a decirle que queremos ver el vector "arboles" pero que nos muestre primero el tercer elemento, luego el primero y finalmente el segundo.
+```{r}
+arboles[c(3,1,2)]
+```
+También tenemos algunas funciones en R para ordenar vectores. La función sort() nos devuelve los números ordenados de menor a mayor. Si indicamos el parámetro decreasing=TRUE, entonces los devuelve de mayor a menor.
+```{r}
+sort(numeros)
+sort(numeros, decreasing = TRUE)
+```
+La función order() funciona igual que sort(), pero en vez de devolvernos los números directamente, nos devuelve el puesto que ocupan en el vector.
+```{r}
+order(numeros)
+order(numeros, decreasing = TRUE)
+```
+Curiosamente, las funciones order() y sort() también se pueden aplicar en vectores de caracteres, que nos devuelven ordenados alfabéticamente.
+```{r}
+sort(arboles)
+order(arboles)
+```
+
+### Conjuntos de datos (*data.frame*)
+Ya hemos visto los dos tipos de objetos básicos para poder explicar el tipo de objeto que más nos interesa hoy: los conjuntos de datos,
+Los conjuntos de datos son tablas con un número de filas y de columnas. Se crean con la función data.frame(), indicando el nombre de cada variable (cada columna) y los valores que contiene (es decir, las observaciones para cada una).
+```{r}
+df<-data.frame(meses=c("enero","febrero","marzo","abril","mayo","junio",
+                               "julio","agosto","septiembre","octubre",
+                               "noviembre","diciembre"),
+                       dias=c(31,28,31,30,31,30,31,31,30,31,30,31))
+```
+
+Podemos acceder a las columnas del data.frame con el signo del dólar.
+```{r}
+df$meses
+df$dias
+```
+
+También podemos acceder con los corchetes, teniendo en cuenta que los data.frame tienen dos dimensiones: filas y columnas. Por lo tanto, indicamos primero las filas que queremos seleccionar y luego las columnas, separando los números por una coma. Si no ponemos ningún número, R interpretará que lo queremos todo.
+```{r}
+df[,] # nos devuelve todas las filas y todas las columnas, es decir, el data.frame entero
+df[,1] # nos devuelve todas las filas y la primera columna
+df[1,] # nos devuelve la primera fila y todas las columnas
+df[,"dias"] # nos devuelve todas las filas y la columna "dias"
+```
+
+
+5. Rutas y directorios
+======================
+Una cosa importante para importar y exportar datos en R es saber indicarle en qué lugar de nuestro ordenador están o queremos guardar nuestros datos.
+
+**Directorio de trabajo**  
+El directorio de trabajo es lugar en nuestro ordenador (la carpeta) donde estamos trabajando y donde, si no indicamos otra cosa, R buscará y escribirá información cuando se lo pidamos. Para saber cuál es nuestro directorio de trabajo usamos la función getwd() (*get working directory*).
+```{r}
+getwd()
+```
+
+**Rutas completas y relativas**  
+La función getwd() nos devuelve la ruta de carpetas que tendríamos que ir abriendo desde el disco C hasta nuestra carpeta de trabajo. Esto se llama una **ruta completa**.
+Podemos saber qué archivos hay en nuestro directorio con la función list.files()
+```{r}
+list.files()
+```
+Esta función nos devuelve los archivos solo con su nombre, en forma de **ruta relativa** al directorio en el que estamos. Las rutas relativas se expresan respecto a un directorio, que puede ser el actual u otro, pero no respecto al disco.
+
+Podemos cambiar nuestro directorio de trabajo con la función setwd(), indicando la ruta de la carpeta deseada, sea en forma completa o relativa.
+Aquí es muy útil el tabulador para ir autocompletando sin necesidad de que nos acordemos del orden de las carpetas.
+
+
+  
+6. Operaciones con conjuntos de datos
+=====================================
+Ahora que sabemos un poco de cómo funciona R vamos a seguir profundizando en los conjuntos de datos, que creemos que es lo que más podéis usar en esta etapa (TFG, TFM, ect.). Vamos a ver ejemplos de las operaciones más comunes que nos puede interesar hacer.
+
+### 4.1. Importar un conjunto de datos
+1. Importar datos de Excel (.xlsx)
+Las hojas de cálculo como Excel son muy prácticas para guardar datos y seguramente así lo hagáis. Para leer datos de R en Excel usamos el paquete readxl. Si no está instalado hay que instalarlo y luego cargar el paquete al entorno.
+Os proporcionamos unos datos de absorbancia de un ensayo BCA para medir concentración de proteínas. Tenemos las funciones readxl() y readxlsx(). En este caso usamos la función readxls() porque nuestro archivo es .xlsx.
+```{r}
+# install.packages("readxl") # Descomentar esta línea para instalarlo
+library(readxl)
+bca<-read_xlsx("BCA_assay.xlsx",sheet=1,skip = 1)
+```
+
+2. Importar datos delimitados por separadores
+En general, cualquier archivo que contenga datos tiene los valores organziados en filas y dentro de cada fiula los valores separados por algún caracter (separador) para indicar que pertenecen a diferentes columnas. Este separador puede ser un espacio (.txt), una coma, (.csv) o un tabulador (.tsv)
+En general, la función read.delim() detecta bien el tipo de separador que se ha empleado para delimitar las columnas. También podemos emplear la función read.table(), aunque en esta sí tenemos que indicarle cuál es el separador.
+```{r}
+tmb<-read.delim("tmb_mskcc_2018_clinical_data.tsv")
+tmb<-read.table("tmb_mskcc_2018_clinical_data.tsv",header=TRUE,sep="\t")
+```
+Además hay paquetes fuera de R base que también sirven para leer archivos, como **readr** y **openslsx**.
+
+### 4.2. El paquete dplyr
+El paquete dplyr es muy útil para trabajar con conjuntos de datos, por lo que lo instalaremos si no lo está.
+```{r}
+library(dplyr)
+# install.packages(dplyr)
+```
+Para los siguientes apartados veremos soluciones en R base y con funciones del paquete dplyr. Usar una u otra opción dependerá únicamente de vuestra preferencia.
+
+
+### 4.3. Conocer la estructura de un conjunto de datos
+Lo primero que tenemos que conocer de nuestro conjunto de datos es el número de observaciones (filas) t variables (columnas), así como el tipo de datos que contiene. Esto lo podemos obtener con la función str().
+```{r}
+str(bca)
+```
+
+
+### 4.3. Filtrar un conjunto de datos
+* Operadores lógicos
+Los operadores lógicos nos sirven para hacerle preguntas a R y que nos responda con verdadero o falso.
+```{r}
+# IMPORTANTE ESCRIBIR DOS VECES "="
+1==2 ## ¿1 es igual a 2?
+1!=2 ## ¿1 es diferente de 2?
+1<0 ## ¿1 es menor que 0?
+1>0 ## ¿1 es mayor que 0?
+```
+
+* grep/grepl
+
+### 4.4 Reordenar un conjunto de datos
+
+### 4.5 Añadir filas y columnas
+
+```{r}
+rbind()
+cbind()
+df$new_column<-df$dias*2
+```
+
+
+
+7. Breve análisis estadístico
+=============================
+No vamos a entrar mucho en el terreno de la estadística, ya que es complejo y todo lo infinito que queramos. Sin embargo, hay una parte muy importante a la hora de hacer cualquier análisis, que es conocer el comportamiento de las variables (estadística descriptiva) antes de poder analizar la significancia de la relación entre ellas (estadística inferencial).
+El conjunto de datos con el que vamos a trabajar ahora lo hemos obtenido a través del portal **cBioPortal**. cBioPortal contiene datos de genómica en cáncer y su creación y mantenimiento es del Memorial Sloan Kettering Cancer Center. El conjunto de datos está disponible como "TMB and immunotherapy (MSK,Nat Genet 2019)" (https://www.cbioportal.org/study/summary?id=tmb_mskcc_2018). Podéis descargarlo desde el repositorio de github o en cBioPortal en la pestaña "Clinical Data" seleccionando todas las variables y descargando los datos en formato ".tsv". 
+
+Este apartado servirá como ejemplo de cómo proceder a analizar un conjunto de datos.
+
+Exploramos la estructura del conjunto de datos con la función str().
+```{r}
+tmb<-read.delim("tmb_mskcc_2018_clinical_data.tsv")
+str(tmb)
+```
+Vemos que tenemos 1661 observaciones para 24 variables, de las cuales unas son de tipo caracter y otras son de tipo numérico.
+Me llama la atención que hay una variable que identifica al paciente y otra la muestra del paciente, por lo que me oregunto, ¿hay algún paciente con más de una muestra? Esto lo puedo comprobar viendo si hay algún identificador del paciente repetido, con la función duplicated().
+```{r}
+id.duplicados<-duplicated(tmb$Patient.ID)
+sum(id.duplicados)
+```
+
+
+Una buena práctica es comprobar si hay algún valor faltante. En R estos valores se denominan *NA*. Para ello podemos usar la función apply(), indicando que sobre el objeto df, por filas, queremos saber si hay algún NA. Es decir, queremos saber si hay pacientes para los que no tenemos datos de alguna de las variables. Vamos a quedarnos únicamente con aquellas observaciones que están completas. A este nuevo conjunto de datos le vamos a llamar tmb.complete.
+```{r}
+na.count<-rowSums(is.na(tmb))
+tmb.complete<-tmb[na.count==0,]
+```
+
+
+
+### 5.1. Estadística descriptiva
+En primer lugar, debemos caracterizar cada variable, describir qué valores tiene en nuestro estudio. La descripción de cada variable dependerá de si es de tipo numérico o categórico. 
+
+1. Variables de tipo numérico.
+Las variables de tipo numérico se describen con medidas de centralidad, como son la media y la mediana. Otros valores que podemos obtener son los valores mínimo y máximo. La función summary() nos permite obtener esta información para todas las variables, excepto para las de tipo caracter.
+```{r}
+summary(tmb.complete)
+```
+También podemos obtener estos valores para alguna variable de interés. Por ejemplo, vamos a explorar el número de mutaciones.
+
+```{r}
+mean(tmb$Mutation.Count)
+mean(tmb$Mutation.Count, na.rm = TRUE)
+mean(tmb.complete$Mutation.Count)
+```
+También podemos caracterizar los valores mínimo y máximo.
+```{r}
+min(tmb.complete$Mutation.Count)
+max(tmb.complete$Mutation.Count)
+```
+
+
+2. Variables de tipo categórico.
+Las variables de tipo categórico se definen por la frecuencia de sus valores. Podemos explorar la variable "Cancer.Type" con la función table(). Vemos que solo hay un paciente con cáncer de piel, por lo que probablemente eliminaremos este paciente en las pruebas estadísticas.
+```{r}
+table(tmb.complete$Cancer.Type)
+```
+
+
+
+3. Gráficos
+Representar la información de forma gráfica es un recurso muy útil para visualizar de forma inmediata su comportamiento
+
+- Gráfico de dispersión. Es útil para explorar si existe alguna relación entre dos variables. Nos podemos preguntar si hay alguna relación entre el número de mutaciones y la edad del paciente. Fijaos que podemos cambiar el título de los ejes para que nos quede más presentable.
+```{r}
+plot(tmb.complete$Mutation.Count, tmb.complete$Age.at.Which.Sequencing.was.Reported..Days.,
+     xlab="número de mutaciones",
+     ylab = "edad (días)")
+```
+
+- Gráfico de cajas y bigotes
+Los gráficos de cajas y bigotes nos sirven para ver la dispersión y simetría de nuestros datos. Venos que la variable Mutation.Count tiene valores extremos.
+```{r}
+boxplot(tmb.complete$Mutation.Count)
+```
+También lo podemos representar respecto a otra variable; por ejemplo, el número de mutaciones en los diferentes tipos de cáncer.
+```{r}
+boxplot(tmb.complete$Mutation.Count ~tmb.complete$Cancer.Type,
+        xlab="Tipo de cáncer",
+        ylab="Número de mutaciones")
+```
+
+- Gráfico de barras. Nos sirve para representar la frecuencia de los valores de una variable. Podemos representar el grupo de edad de los pacientes. Vemos que el grupo más frecuente es el de 61-70 años.
+
+```{r}
+age.freq<-table(tmb.complete$Age.Group.at.Diagnosis.in.Years)[c(1,3,4,5,2)]
+age.bar<-barplot(age.freq,
+        col=brewer.pal(5, "Set3"),
+        xlab="Edad al diagnóstico (años)",
+        ylab="Número de pacientes",
+        ylim = c(0,max(age.freq)+30),
+        cex.names=0.6
+        )
+```
+
+
+
+### 5.2. Estadística inferencial
+En un análisis de datos biológicos normalmente no querremos quedarnos en describir las variables que hemos estudiado, sino responder a una pregunta biológica, es decir, tenemos una hipótesis. Para contrastar nuestra hipótesis y ver si se cumple o no en base a los datos que hemos colectado, recurrimos a las pruebas estadísticas. Hay dos premisas que se tienen en cuenta para las variables numéricas, que son la normalidad y la igualdad de varianzas entre las variables a comparar.
+
+1. Test de normalidad
+Una cuestión que tenemos que tener en cuenta para aplicar casi cualquier prueba estadística es saber si nuestros datos tienen una distribución normal, ya que las condiciones en que son válidas ciertas pruebas solo se aplican si los datos son normales. Para ello, podemos emplear pruebas como el test de Shapiro Wilks y pruebas gráficas.
+
+En el caso del test Shapiro Wilks, la hipótesis nula es que no hay diferencia entre la distribución de nuestros datos y una distribución normal. Por lo tanto, si el p valor está por encima del valor de significancia que hayamos establecido (que normalmente es del 5%), aceptaremos la hipótesis nula. En caso contrario, la rechazaremos y diremos que nuestros datos no siguen una distribución normal.
+```{r}
+shapiro.test(tmb.complete$Mutation.Count)
+```
+También podemos recurrir a los gráficos de cuantiles, que son muy informativos. En él se representan los datos frente a los de una distribución normal, con una línea que los correlaciona. Solo rechazaremos la normalidad si los puntos se alejan mucho de la línea que relaciona los cuantiles con los cuantiles teóricos.
+```{r}
+qqnorm(tmb.complete$Mutation.Count)
+qqline(tmb.complete$Mutation.Count)
+```
+En este caso, ambas pruebas nos indican que la variable Mutation.Count no sigue una distribución normal.
+
+2. Test de igualdad de varianzas
+Otra de las premisas que se tienen que cumplir para aplicar ciertas pruebas es que las varianzas de los grupos sean iguales. Para ello podemos emplear el test de Levene usando la función leveneTests() del paquete heplots. Por ejemplo, imaginad que quiero comparar si la varianza del número de mutaciones es igua entre hombres y mujeres. El test nos indica que las varianzas no son iguales.
+```{r}
+leveneTests(tmb.complete[,"Mutation.Count", drop=FALSE],
+            tmb.complete$Sex)
+```
+
+
+3. Comparación de medias para distribuciones normales (pruebas paramétricas)
+* Comparación de dos grupos: T test. Como en nuestro conjunto de datos no tenemos variables que sigan una distribución normal, vamos a usar otros datos de ejemplo.
+```{r}
+plot(extra ~ group, data = sleep)
+
+leveneTests(sleep[,1, drop=FALSE], sleep$group)
+t.test(extra ~ group, data = sleep, var.equal=TRUE)
+```
+
+* Comparación de más de dos grupos: ANOVA.
+Nos podemos preguntar si hay diferencias en el número de mutaciones entre los diferentes tipos de cáncer. El test de ANOVA nos dice que sí hay diferencias entre los distintos tipos de cáncer. En un sentido estricto, este test estaría mal aplicado porque la distribución de la variable no es normal, aunque hay autores que dicen que con más de 30 observaciones se puede aplicar un test paramétrico.
+```{r}
+anova(lm(Mutation.Count ~ Cancer.Type, data = tmb.complete))
+
+```
+
+4. Comparación de medias para distribuciones no normales (pruebas no paramétricas)
+
+* Comparación de dos grupos: test de Wilcoxon.
+Nos podemos preguntar si el número de mutaciones es diferentes entre hombres y mujeres.
+```{r}
+wilcox.test(tmb.complete$Mutation.Count[tmb.complete$Sex=="Female"],
+            tmb.complete$Mutation.Count[tmb.complete$Sex=="Male"])
+```
+
+* Comparación de más de dos grupos: test de Kruskal Wallis.
+Vemos que el resultado del test no paramétrico nos lleva a la misma conclusión que el paramétrico: hay diferencias en el número de mutaciones entre los distintos tipos de cáncer.
+```{r}
+kruskal.test(Mutation.Count ~ Cancer.Type, data = tmb.complete)
+```
+
+
+5. Correlación entre variables.
+Podemos emplear la función plots() para ver la relación entre variables y la función cor() para obtener el coeficiente de correlación. Vemos que el número de mutaciones y la edad no parecen tener correlación, y esto lo confirmamos con que el coeficiente de correlación es muy bajo.
+```{r}
+plot(tmb.complete$Age.at.Which.Sequencing.was.Reported..Days., tmb.complete$Mutation.Count,
+     xlab="Edad (días)",
+     ylab = "Número de mutaciones")
+cor(tmb.complete$Age.at.Which.Sequencing.was.Reported..Days., tmb.complete$Mutation.Count)
+```
+La función pairs() nos permite obtener gráficos de dispersión para todas las variables dos a dos.
+```{r}
+pairs(tmb.complete[,c("Age.at.Which.Sequencing.was.Reported..Days.",
+                      "Mutation.Count",
+                      "Sample.coverage",
+                      "TMB..nonsynonymous.")]
+      )
+```
+
+6. Test para variables categóricas
+Nos podemos preguntar si el cáncer de vejiga (bladder) es más frecuente en hombres o en mujeres. Para ello emplearemos el test de chi cuadrado con la función chisq.test(), que nos devuelve que sí es significativa la diferencia en el número de casos de cáncer de vejiga entre hombres y mujeres.
+```{r}
+table(tmb.complete$Cancer.Type,tmb.complete$Sex)
+chisq.test(table(tmb.complete$Sex[tmb.complete$Cancer.Type=="Bladder Cancer"]))
+```
+
+
+
+8. Guardar la información
+=========================
+Probablemente durante nuestro análisis hayamos modificado nuestro conjunto de datos, generado gráficos, etc. y queramos guardarlos.
+
+Para guardar un conjunto de datos podemos emplear la función write.table, indicando el conjunto de datos que queremos guardar y la ruta donde lo queremos escribir, incluyendo el nombre y extensión del fichero.
+```{r}
+# write.table()
+```
+
+Los gráficos generados se pueden guardar con la función ggsave(). También podemos pinchar en el desplegable "Export" y guardarlo en el formato que queramos o cpoiarlo en el portapapeles.
+
+
+9. Buenas prácticas
+===================
+* Escribir comentarios en el código. Los comentarios son líneas que van precedidas con la almohadilla "#" y que R no ejecuta. Sirven para dejar notas sobre lo que hace nuestro código o para dejar como borrador líneas de código que aún no queremos eliminar Lo hacemos con Alt Gr + 3 o con la combinación de teclas Ctrl + MAYUS + C si sobre una selección de líneas.
+* No usar espacios al nombrar archivos (mejor Mi_archivo.R que Mi archivo.R). También para las carpetas sería una buena costumbre.
+* Usar nombres de variables representativos.
+* Guardar el trabajo frecuentemente. Ctrl + S.
+
+
+
+10. Análisis de un conjunto de datos
+===================================
+Es vuestro turno para trabajar con los datos.
+Os dejamos varias opciones.
+* Podéis seguir trabajando sobre el conjunto de datos "tmb_mskcc_2018_clinical_data.tsv".  
+* R base incluye conjuntos de datos sobre los que trabajar, como el conjunto ToothGwroth. Estos conjuntos de datos se cargan con la función data().
+* Vuestros propios datos.
+
+
+
+11. Cómo seguir aprendiendo por tu cuenta
+========================================
+Un recurso muy sencillo, gratis y eficaz es swirl, que es un paquete para aprender R dentro de R. La instalación de swirl se realiza con install.packages(). Podéis encontrar las instrucciones en [<span style="color:blue">este enlace</span>](https://swirlstats.com/students.html).
+```{r}
+# install.packages("swirl")
+# library(swirl)
+# swirl()
+```
+También hay mucho material disponible en internet. Algunas recomendaciones:
+
+* *An introduction to R" (31/10/2022). https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf
+* Los libros de Rafael Irizarry, profesor de bioestadística en la Universidad de Harvard. Uno de sus libros es Introduction to Data Science, disponible gratuitamente en Leanpub (https://leanpub.com/datasciencebook). También hay la versión en español (http://rafalab.dfci.harvard.edu/dslibro/). Echad también un ojo a sus cursos en edX (https://www.edx.org/es/bio/rafael-irizarry). Aunque son de pago si queréis el certificado, el material está accesible gratuitamente durante bastante tiempo.
+* Cursos gratuitos en Datacamp: https://www.datacamp.com/courses/free-introduction-to-r
+* Esta página es muy resolutiva en temas de estadística: http://www.sthda.com/english/wiki/what-is-r-and-why-learning-r-programming
+
+La forma de aprender a usar R es usándolo. Buscad algo que os motive. Un buen ejercicio puede ser usar datos de vuestros proyectos que sean sencillos y podáis comparar vuestros análisis con R y con la herramienta que hayáis empleado hasta ahora. En vuestra cuenta de Posit Cloud ahora tenéis guardado lo que habéis hecho en esta sesión. Os animamos a que instaléis R y RStudio en casa, a que os entretengáis un rato a repasar lo que hemos visto, a que os salgan errores, a intentar solucionarlo,... y a que poco a poco os vayáis animando a utilizarlo para analizar vuestros propios datos. Veréis que cuando os deis cuenta de que R es como un folio en blanco en el que podéis pintar con absoluta libertad, ¡no querréis volver a usar otra cosa!
+
