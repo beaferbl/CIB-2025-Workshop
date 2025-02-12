@@ -52,7 +52,7 @@ En esta sesión vamos a conocer R como una herramienta para visualizar y analiza
 =============================
 En esta sesión trabajaremos en RStudio en la nube a través de Posit Cloud. Únicamente necesitamos registrarnos con una cuenta de correo electrónico. Si bien es práctico para los objetivos de esta sesión, tened en cuenta que Posit Cloud tiene unos recursos limitados en la versión libre, de los cuales destaca que solo permite 25 horas de uso al mes. Lo ideal es trabajar en local, por lo que os dejamos las instrucciones.
 
-### 2.1 Instalación de R y RStudio
+## 2.1 Instalación de R y RStudio
 Todo el código y documentación de R está almacenado en **CRAN** (Comprehensive R Archive Network), que es una red de servidores alrededor del mundo. Es decir, CRAN es el sitio oficial a través del cual descargaremos R.
 <p>
 ![Instalación de R](Figure3.png)
@@ -67,7 +67,7 @@ Sin embargo, vamos a aprender a usar R dentro de RStudio, que es una interfaz qu
 ![Instalación de RStudio](Figure5.png)
 <p>
 
-### 2.2 Exploramos RStudio
+## 2.2 Exploramos RStudio
 Cuando abrimos RStudio vemos varios paneles, vamos a ver qué es cada uno de ellos.
 
 1. La consola
@@ -117,7 +117,7 @@ El uso más sencillo de R es como calculadora. Aquí tenemos algunas operaciones
 Hasta ahora hemos visto el uso de R como calculadora. Sin embargo, las instrucciones que tendremos que ejecutar en un análisis de datos serán muchas otras: importar el conjunto de datos, filtrarlo, hacer operaciones con las variables de nuestro interés, hacer un gráfico, etc. Por ello, debemos conocer cómo interpreta y almacena R la información. 
 
 
-### 4.1 Concepto de variable
+## 4.1 Concepto de variable
 En primer lugar, tenemos que recordar que las instrucciones que se ejecutan en la consola no se guardan, pero necesitamos que R la recuerde y la tengamos accesible para seguir operando sobre ella.
 
 Por ejemplo, hasta ahora hemos realizado operaciones sencillas, pero si pensamos en hacer varias operaciones, seguramente nos interese guardar el resultado de algunas de ellas. Podemos asignar el resultado 3+2 a una variable que se llame "a". La asignación de valores a una variable se puede hacer con la combinación "<-", como si fuera una flecha, o con el signo "=". Por convenio se prefiere la primera.
@@ -153,7 +153,7 @@ Podemos nombrar a las variables como queramos pero teniendo en cuenta algunas re
 
 
 
-### 4.2 Concepto de objeto
+## 4.2 Concepto de objeto
 La información que almacenamos en variables puede ser de distinto tipo. R tiene una idea preconcebida del tipo de información con el que va a trabajar. A cada tipo de información se le llama objeto. Cada objeto tiene asociadas una serie de operaciones o instrucciones que se le pueden aplicar. Cualquier tipo de objeto se puede asignar a una variable. Existen diferentes tipos de objetos en R base: vectores, listas, matrices, conjuntos de datos,... y otros objetos que son propios de determinados paquetes.
 Es difícil decidir qué tipo de objeto comenzar a explicar primero porque muchas veces la explicación de uno depende de otro. Normalmente se comienza por los vectores porque son el tipo de objeto más sencillo. Sin embargo, iremos en el orden que nos parece más didáctico a favor de esta sesión.
 
@@ -229,7 +229,7 @@ df$dias
 
 También podemos acceder con los corchetes, teniendo en cuenta que los data.frame tienen dos dimensiones: filas y columnas. Por lo tanto, indicamos primero las filas que queremos seleccionar y luego las columnas, separando los números por una coma. Si no ponemos ningún número, R interpretará que lo queremos todo.
 ```{r}
-df[,] # nos devuelve todas las filas y todas las columnas, es decir, el data.frame entero
+df[,] # nos devuelve todas las filas y todas las columnas
 df[,1] # nos devuelve todas las filas y la primera columna
 df[1,] # nos devuelve la primera fila y todas las columnas
 df[,"dias"] # nos devuelve todas las filas y la columna "dias"
@@ -263,7 +263,7 @@ Aquí es muy útil el tabulador para ir autocompletando sin necesidad de que nos
 =====================================
 Ahora que sabemos un poco de cómo funciona R vamos a seguir profundizando en los conjuntos de datos, que creemos que es lo que más podéis usar en esta etapa (TFG, TFM, ect.). Vamos a ver ejemplos de las operaciones más comunes que nos puede interesar hacer.
 
-### 6.1. Importar un conjunto de datos
+## 6.1. Importar un conjunto de datos
 1. Importar datos de Excel (.xlsx)
 Las hojas de cálculo como Excel son muy prácticas para guardar datos y seguramente así lo hagáis. Para leer datos de R en Excel usamos el paquete readxl. Si no está instalado hay que instalarlo y luego cargar el paquete al entorno.
 Os proporcionamos unos datos de absorbancia de un ensayo BCA para medir concentración de proteínas. Tenemos las funciones readxl() y readxlsx(). En este caso usamos la función readxls() porque nuestro archivo es .xlsx.
@@ -287,7 +287,7 @@ help("read.csv")
 Además hay paquetes fuera de R base que también sirven para leer archivos, como **readr** y **openslsx**.
 
 
-### 6.2. Conocer la estructura de un conjunto de datos
+## 6.2. Conocer la estructura de un conjunto de datos
 Lo primero que tenemos que conocer de nuestro conjunto de datos es el número de observaciones (filas) t variables (columnas), así como el tipo de datos que contiene. Esto lo podemos obtener con la función str().
 
 ```{r}
@@ -337,8 +337,8 @@ summary(tmb)
 
 table(tmb$Sex) # Distribución de sexos
 table(tmb$Cancer.Type) # Tipos de cancer recogidos
-table(tmb$Sample.Type) # Tipos de muestras: al diagnostico (primary) o metastásicas
-table(tmb$Drug.Type) # Tipos de farmaco
+table(tmb$Sample.Type) # Tipos de muestras: al diagnostico o metastásicas
+table(tmb$Drug.Type) # Tipos de fármaco
 ```
 Añadir columnas:
 ```{r}
@@ -351,7 +351,7 @@ valores <- c(0.1,0.5,1.6,1.80,1.76,0.90, 1.60, 1.81,1.74, 2.4, 0.9)
 bca$factor_correccion <- valores
 ```
 
-### 6.3. Filtrar un conjunto de datos
+## 6.3. Filtrar un conjunto de datos
 * Operadores lógicos
 Los operadores lógicos nos sirven para hacerle preguntas a R y que nos responda con verdadero o falso.
 ```{r}
@@ -369,30 +369,37 @@ bca[bca$nombre == "muestra1",]
 bca[bca$nombre == "muestra2",]
 bca[bca$medida1 > 0.5,] # Importante: la "," indica que queremos todas las columnas.
 # Obtener valores de una columna
-bca$nombre[bca$medida1 >0.5] # Nota: Ya seleccionamos una columna, no hace falta la ",".
+bca$nombre[bca$medida1 >0.5] # Nota: Ya seleccionamos una columna,
+# no hace falta la ",".
 ```
 
 Filtros combinados:
 ```{r}
 # Muestras de cancer de mama
-tmb[tmb$Cancer.Type == "Breast Cancer",] 
+tmb_mama<-tmb[tmb$Cancer.Type == "Breast Cancer",] 
 
 # Filtras columnas:
-tmb[tmb$Cancer.Type == "Breast Cancer", c("Sample.ID", "Patient.ID", "Sample.Type", "Mutation.Count")] 
-tmb_filt  <- tmb[tmb$Cancer.Type == "Breast Cancer", c("Sample.ID", "Patient.ID", "Sample.Type", "Mutation.Count")] 
+tmb_col<-tmb[tmb$Cancer.Type == "Breast Cancer",
+             c("Sample.ID", "Patient.ID", "Sample.Type", "Mutation.Count")] 
+tmb_filt  <- tmb[tmb$Cancer.Type == "Breast Cancer",
+                 c("Sample.ID", "Patient.ID", "Sample.Type", "Mutation.Count")] 
 tmb_filt
 str(tmb_filt)
 
 # Muestras metastasicas de cancer de mama:
-tmb[tmb$Cancer.Type == "Breast Cancer" & tmb$Sample.Type == "Metastasis",]
+tmb_mama_metastasis<-tmb[tmb$Cancer.Type == "Breast Cancer" &
+                           tmb$Sample.Type == "Metastasis",]
 
 # Muestras de varios tipos de cancer: filtro por listado de valores
 table(tmb$Cancer.Type) # Tipos de cancer recogidos
-tmb[tmb$Cancer.Type %in%  c("Breast Cancer", "Melanoma", "Skin Cancer, Non-Melanoma"),] # dataframe
-tmb$Sample.ID[tmb$Cancer.Type %in%  c("Breast Cancer", "Melanoma", "Skin Cancer, Non-Melanoma")] # listado
+tmb_cancers_filt<-tmb[tmb$Cancer.Type %in%
+      c("Breast Cancer", "Melanoma", "Skin Cancer, Non-Melanoma"),] # dataframe
+tmb_id_cancer<-tmb$Sample.ID[tmb$Cancer.Type %in%
+                c("Breast Cancer", "Melanoma", "Skin Cancer, Non-Melanoma")] # listado
 
 table(tmb$Age.Group.at.Diagnosis.in.Years)
-tmb$Sample.ID[tmb$Age.Group.at.Diagnosis.in.Years %in% c("31-50", "50-60")]
+tmb_id_age<-tmb$Sample.ID[tmb$Age.Group.at.Diagnosis.in.Years %in%
+                            c("31-50", "50-60")]
 ```
 
 ```{r}
@@ -400,16 +407,16 @@ subset(tmb, Cancer.Type == "Breast Cancer")
 ```
 
 
-### 6.4. Reordenar un conjunto de datos
+## 6.4. Reordenar un conjunto de datos
 Funcion order
 ```{r}
 tmb_ordenado <- tmb[order(tmb$Mutation.Count), ] # Orden ascendente
 
-tmb_ordenado <- tmb[order(tmb$Mutation.Count, decreasing=TRUE),] # Orden descendente
+tmb_ordenado <- tmb[order(tmb$Mutation.Count, decreasing=TRUE),] # Descendente
 head(tmb_ordenado$Mutation.Count)
 ```
 
-### 6.5. Operaciones sencillas con columnas:
+## 6.5. Operaciones sencillas con columnas:
 
 ```{r}
 bca$Conteo <- bca$medida1 + 10
@@ -432,8 +439,8 @@ any(is.na(bca))
 bca_aux <- na.omit(bca_aux) # Eliminar estos registros
 ```
 
-### 6.6. Buscar valores y reemplazarlos
-Substituir valores
+## 6.6. Buscar valores y reemplazarlos
+Sustituir valores
 ```{r}
 # gsub
 table(tmb$Cancer.Type)
@@ -460,14 +467,14 @@ grep(pattern= "Glioma",
 glioma.df <- tmb[grep(pattern= "Glioma",x = tmb$Cancer.Type),]
 head(glioma.df)
 
-grepl(pattern= "Glioma",
+grepl_glioma<-grepl(pattern= "Glioma",
      x = tmb$Cancer.Type)
 
 glioma.df <- tmb[grepl(pattern= "Glioma",x = tmb$Cancer.Type),]
 ```
 
 
-### 6.7. El paquete dplyr
+## 6.7. El paquete dplyr
 El paquete dplyr es muy útil para trabajar con conjuntos de datos, por lo que lo instalaremos si no lo está.
 Cheat Sheet: https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf
 ```{r}
@@ -481,18 +488,21 @@ tmb %>%
   group_by(Sex) %>%
   count() # Similar a la función table
 
+# Aparece un NA
 tmb %>% 
   group_by(Cancer.Type) %>%
-  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days.)) # Aparece un NA
+  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days.))
 
 tmb %>% 
   group_by(Cancer.Type) %>%
-  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days., na.rm = TRUE))
+  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days.,
+                                   na.rm = TRUE))
 
 tmb %>% 
   filter(Cancer.Type == "Melanoma") %>%
   group_by(Sex) %>%
-  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days., na.rm = TRUE))
+  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days.,
+                                   na.rm = TRUE))
 
 ```
 Todas estas operaciones y más, recogidas en: https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf
@@ -525,7 +535,7 @@ tmb.complete<-tmb[na.count==0,]
 
 
 
-### 7.1. Estadística descriptiva
+## 7.1. Estadística descriptiva
 En primer lugar, debemos caracterizar cada variable, describir qué valores tiene en nuestro estudio. La descripción de cada variable dependerá de si es de tipo numérico o categórico. 
 
 1. Variables de tipo numérico.
@@ -559,7 +569,8 @@ Representar la información de forma gráfica es un recurso muy útil para visua
 
 - Gráfico de dispersión. Es útil para explorar si existe alguna relación entre dos variables. Nos podemos preguntar si hay alguna relación entre el número de mutaciones y la edad del paciente. Fijaos que podemos cambiar el título de los ejes para que nos quede más presentable.
 ```{r}
-plot(tmb.complete$Mutation.Count, tmb.complete$Age.at.Which.Sequencing.was.Reported..Days.,
+plot(tmb.complete$Mutation.Count,
+     tmb.complete$Age.at.Which.Sequencing.was.Reported..Days.,
      xlab="número de mutaciones",
      ylab = "edad (días)")
 ```
@@ -593,7 +604,7 @@ age.bar<-barplot(age.freq,
         )
 ```
 
-### 7.2. Estadística inferencial
+## 7.2. Estadística inferencial
 En un análisis de datos biológicos normalmente no querremos quedarnos en describir las variables que hemos estudiado, sino responder a una pregunta biológica, es decir, tenemos una hipótesis. Para contrastar nuestra hipótesis y ver si se cumple o no en base a los datos que hemos colectado, recurrimos a las pruebas estadísticas. Hay dos premisas que se tienen en cuenta para las variables numéricas, que son la normalidad y la igualdad de varianzas entre las variables a comparar.
 
 1. Test de normalidad
@@ -613,6 +624,7 @@ En este caso, ambas pruebas nos indican que la variable Mutation.Count no sigue 
 2. Test de igualdad de varianzas
 Otra de las premisas que se tienen que cumplir para aplicar ciertas pruebas es que las varianzas de los grupos sean iguales. Para ello podemos emplear el test de Levene usando la función leveneTests() del paquete heplots. Por ejemplo, imaginad que quiero comparar si la varianza del número de mutaciones es igua entre hombres y mujeres. El test nos indica que las varianzas no son iguales.
 ```{r}
+library(heplots)
 leveneTests(tmb.complete[,"Mutation.Count", drop=FALSE],
             tmb.complete$Sex)
 ```
@@ -653,10 +665,12 @@ kruskal.test(Mutation.Count ~ Cancer.Type, data = tmb.complete)
 5. Correlación entre variables.
 Podemos emplear la función plots() para ver la relación entre variables y la función cor() para obtener el coeficiente de correlación. Vemos que el número de mutaciones y la edad no parecen tener correlación, y esto lo confirmamos con que el coeficiente de correlación es muy bajo.
 ```{r}
-plot(tmb.complete$Age.at.Which.Sequencing.was.Reported..Days., tmb.complete$Mutation.Count,
+plot(tmb.complete$Age.at.Which.Sequencing.was.Reported..Days.,
+     tmb.complete$Mutation.Count,
      xlab="Edad (días)",
      ylab = "Número de mutaciones")
-cor(tmb.complete$Age.at.Which.Sequencing.was.Reported..Days., tmb.complete$Mutation.Count)
+cor(tmb.complete$Age.at.Which.Sequencing.was.Reported..Days.,
+    tmb.complete$Mutation.Count)
 ```
 La función pairs() nos permite obtener gráficos de dispersión para todas las variables dos a dos.
 ```{r}
@@ -674,7 +688,7 @@ table(tmb.complete$Cancer.Type,tmb.complete$Sex)
 chisq.test(table(tmb.complete$Sex[tmb.complete$Cancer.Type=="Bladder Cancer"]))
 ```
 
-### 7.3. Edición de figuras:
+## 7.3. Edición de figuras:
 Opciones de personalización
 
 - Añadir colores manualmente: https://r-charts.com/es/colores/
@@ -693,12 +707,13 @@ Paletas de colores
 display.brewer.all(colorblindFriendly = TRUE)
 age.freq<-table(tmb$Age.Group.at.Diagnosis.in.Years)[c(1,3,4,5,2)]
 age.bar<-barplot(age.freq,
-                 col=brewer.pal(5, "Blues"), # brewer.pal(5, "RdBu"); brewer.pal(5, "Set3"); brewer.pal(5, "Pastel2")
+                 col=brewer.pal(5, "Blues"),
                  xlab="Edad al diagnóstico (años)",
                  ylab="Número de pacientes",
                  ylim = c(0,max(age.freq)+30),
                  cex.names=0.6
 )
+# brewer.pal(5, "RdBu"); brewer.pal(5, "Set3"); brewer.pal(5, "Pastel2")
 ```
 
 Posiciones de la leyenda: theme(text=element_text(size=10), legend.position = "bottom")
@@ -732,12 +747,8 @@ ggplot(data=tmb[1:20,],
   labs(y="Cobertura",x="Pureza Tumoral")
 ```
 
-```{r}
 
-```
-
-
-Eliminas outliers:
+Eliminar outliers:
 ```{r}
 ggplot(data=tmb,
        aes(x=Overall.Survival.Status,y=Overall.Survival..Months.))+
