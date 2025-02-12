@@ -263,7 +263,7 @@ Aquí es muy útil el tabulador para ir autocompletando sin necesidad de que nos
 =====================================
 Ahora que sabemos un poco de cómo funciona R vamos a seguir profundizando en los conjuntos de datos, que creemos que es lo que más podéis usar en esta etapa (TFG, TFM, ect.). Vamos a ver ejemplos de las operaciones más comunes que nos puede interesar hacer.
 
-### 4.1. Importar un conjunto de datos
+### 6.1. Importar un conjunto de datos
 1. Importar datos de Excel (.xlsx)
 Las hojas de cálculo como Excel son muy prácticas para guardar datos y seguramente así lo hagáis. Para leer datos de R en Excel usamos el paquete readxl. Si no está instalado hay que instalarlo y luego cargar el paquete al entorno.
 Os proporcionamos unos datos de absorbancia de un ensayo BCA para medir concentración de proteínas. Tenemos las funciones readxl() y readxlsx(). En este caso usamos la función readxls() porque nuestro archivo es .xlsx.
@@ -275,30 +275,83 @@ bca<-read_xlsx("BCA_assay.xlsx",sheet=1,skip = 1)
 
 2. Importar datos delimitados por separadores
 En general, cualquier archivo que contenga datos tiene los valores organziados en filas y dentro de cada fiula los valores separados por algún caracter (separador) para indicar que pertenecen a diferentes columnas. Este separador puede ser un espacio (.txt), una coma, (.csv) o un tabulador (.tsv)
-En general, la función read.delim() detecta bien el tipo de separador que se ha empleado para delimitar las columnas. También podemos emplear la función read.table(), aunque en esta sí tenemos que indicarle cuál es el separador.
+En general, la función read.delim() detecta bien el tipo de separador que se ha empleado para delimitar las columnas. 
+También podemos emplear la función read.table(), aunque en esta sí tenemos que indicarle cuál es el separador.
 ```{r}
 tmb<-read.delim("tmb_mskcc_2018_clinical_data.tsv")
-tmb<-read.table("tmb_mskcc_2018_clinical_data.tsv",header=TRUE,sep="\t")
+tmb<-read.table("tmb_mskcc_2018_clinical_data.tsv",header=TRUE,sep="\t") 
+
+# read.csv para archivos separados por ","
+help("read.csv")
 ```
 Además hay paquetes fuera de R base que también sirven para leer archivos, como **readr** y **openslsx**.
 
-### 4.2. El paquete dplyr
-El paquete dplyr es muy útil para trabajar con conjuntos de datos, por lo que lo instalaremos si no lo está.
-```{r}
-library(dplyr)
-# install.packages(dplyr)
-```
-Para los siguientes apartados veremos soluciones en R base y con funciones del paquete dplyr. Usar una u otra opción dependerá únicamente de vuestra preferencia.
 
-
-### 4.3. Conocer la estructura de un conjunto de datos
+### 6.2. Conocer la estructura de un conjunto de datos
 Lo primero que tenemos que conocer de nuestro conjunto de datos es el número de observaciones (filas) t variables (columnas), así como el tipo de datos que contiene. Esto lo podemos obtener con la función str().
+
 ```{r}
+nrow(bca)
+ncol(bca)
+colnames(bca)
+
+head(bca)
+tail(bca)
+
+# Funciones de resumen:
 str(bca)
+summary(bca)
 ```
 
+Acceder a los datos: 
+data.frame[fila, columna]
+```{r}
+# Acceder a las columnas:
+bca$nombre
+bca$medida1
+bca$medida2
 
-### 4.3. Filtrar un conjunto de datos
+# Acceder a una fila concreta:
+bca[6,]
+
+# Acceder a un valor específico:
+bca[3,2]
+
+# Acceder a un subconjunto de datos:
+bca[1:3,1:3]
+
+bca[1:3, c(1,4)] # acceder por posición
+
+bca[1:3, c("nombre", "concentracion")] # Acceder por nombre
+
+bca[1:3, c("concentracion", "nombre")] # Reordenar columnas
+```
+
+Conocer las variables categoricas y cuantos registros tengo de cada categoria/grupo:
+Con un conjunto de datos más grande:
+```{r}
+colnames(tmb)
+
+str(tmb) #1661 observaciones, 24 variables
+summary(tmb)
+
+table(tmb$Sex) # Distribución de sexos
+table(tmb$Cancer.Type) # Tipos de cancer recogidos
+table(tmb$Sample.Type) # Tipos de muestras: al diagnostico (primary) o metastásicas
+table(tmb$Drug.Type) # Tipos de farmaco
+```
+Añadir columnas:
+```{r}
+#  todas las filas tendrán el valor asignado
+bca$fecha <- "12/02/2025"
+bca$factor_correccion <- 0.5
+
+# especificar el valor de cada fila
+valores <- c(0.1,0.5,1.6,1.80,1.76,0.90, 1.60, 1.81,1.74, 2.4, 0.9)
+bca$factor_correccion <- valores
+```
+
+### 6.3. Filtrar un conjunto de datos
 * Operadores lógicos
 Los operadores lógicos nos sirven para hacerle preguntas a R y que nos responda con verdadero o falso.
 ```{r}
@@ -309,16 +362,138 @@ Los operadores lógicos nos sirven para hacerle preguntas a R y que nos responda
 1>0 ## ¿1 es mayor que 0?
 ```
 
-* grep/grepl
+Filtros básicos:
+```{r}
+# Filtrar conjunto de datos
+bca[bca$nombre == "muestra1",]
+bca[bca$nombre == "muestra2",]
+bca[bca$medida1 > 0.5,] # Importante: la "," indica que queremos todas las columnas.
+# Obtener valores de una columna
+bca$nombre[bca$medida1 >0.5] # Nota: Ya seleccionamos una columna, no hace falta la ",".
+```
 
-### 4.4 Reordenar un conjunto de datos
+Filtros combinados:
+```{r}
+# Muestras de cancer de mama
+tmb[tmb$Cancer.Type == "Breast Cancer",] 
 
-### 4.5 Añadir filas y columnas
+# Filtras columnas:
+tmb[tmb$Cancer.Type == "Breast Cancer", c("Sample.ID", "Patient.ID", "Sample.Type", "Mutation.Count")] 
+tmb_filt  <- tmb[tmb$Cancer.Type == "Breast Cancer", c("Sample.ID", "Patient.ID", "Sample.Type", "Mutation.Count")] 
+tmb_filt
+str(tmb_filt)
+
+# Muestras metastasicas de cancer de mama:
+tmb[tmb$Cancer.Type == "Breast Cancer" & tmb$Sample.Type == "Metastasis",]
+
+# Muestras de varios tipos de cancer: filtro por listado de valores
+table(tmb$Cancer.Type) # Tipos de cancer recogidos
+tmb[tmb$Cancer.Type %in%  c("Breast Cancer", "Melanoma", "Skin Cancer, Non-Melanoma"),] # dataframe
+tmb$Sample.ID[tmb$Cancer.Type %in%  c("Breast Cancer", "Melanoma", "Skin Cancer, Non-Melanoma")] # listado
+
+table(tmb$Age.Group.at.Diagnosis.in.Years)
+tmb$Sample.ID[tmb$Age.Group.at.Diagnosis.in.Years %in% c("31-50", "50-60")]
+```
 
 ```{r}
-rbind()
-cbind()
-df$new_column<-df$dias*2
+subset(tmb, Cancer.Type == "Breast Cancer")
+```
+
+
+### 6.4 Reordenar un conjunto de datos
+Funcion order
+```{r}
+tmb_ordenado <- tmb[order(tmb$Mutation.Count), ] # Orden ascendente
+
+tmb_ordenado <- tmb[order(tmb$Mutation.Count, decreasing=TRUE),] # Orden descendente
+head(tmb_ordenado$Mutation.Count)
+```
+
+### 6.5 Operaciones sencillas con columnas:
+
+```{r}
+bca$Conteo <- bca$medida1 + 10
+bca$Conteo <- bca$medida1 -10 
+bca$Conteo <- bca$medida1/100
+bca$Conteo <- bca$medida1 * bca$factor_correccion
+``` 
+
+Manejar valores nulos (NA).
+Tratar valores nulos, Cuando nos falta algún registro o dato:
+```{r}
+any(is.na(bca))
+colSums(is.na(bca)) # Nulos en la columna de concentracion
+
+bca_aux <- bca
+
+bca[is.na(bca)] <- 0 # Asignar un valor
+any(is.na(bca))
+
+bca_aux <- na.omit(bca_aux) # Eliminar estos registros
+```
+
+### 6.6 Buscar valores y reemplazarlos
+Substituir valores
+```{r}
+# gsub
+table(tmb$Cancer.Type)
+tmb$Cancer.Type <- gsub(pattern = "Cancer",
+                        replacement = "Tumor",
+                        x = tmb$Cancer.Type) 
+table(tmb$Cancer.Type)
+
+tmb$Patient.ID[1:5]
+tmb$Patient.ID <- gsub(pattern = "-",
+                        replacement = ".",
+                        x = tmb$Patient.ID) 
+tmb$Patient.ID[1:5]
+```
+
+Buscar valores:
+Cuando queremos saber la posición de un registro al trabajar con grandes volumenes de información:
+```{r}
+# grep: devuelve indices
+# grepl: devuelve verdadero/falso
+grep(pattern= "Glioma",
+     x = tmb$Cancer.Type)
+
+glioma.df <- tmb[grep(pattern= "Glioma",x = tmb$Cancer.Type),]
+head(glioma.df)
+
+grepl(pattern= "Glioma",
+     x = tmb$Cancer.Type)
+
+glioma.df <- tmb[grepl(pattern= "Glioma",x = tmb$Cancer.Type),]
+```
+
+
+### 6.7. El paquete dplyr
+El paquete dplyr es muy útil para trabajar con conjuntos de datos, por lo que lo instalaremos si no lo está.
+Cheat Sheet: https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf
+```{r}
+library(dplyr)  # 
+# install.packages(dplyr)
+```
+Para los siguientes apartados veremos soluciones en R base y con funciones del paquete dplyr. Usar una u otra opción dependerá únicamente de vuestra preferencia.
+
+```{r}
+tmb %>% 
+  group_by(Sex) %>%
+  count() # Similar a la función table
+
+tmb %>% 
+  group_by(Cancer.Type) %>%
+  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days.)) # Aparece un NA
+
+tmb %>% 
+  group_by(Cancer.Type) %>%
+  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days., na.rm = TRUE))
+
+tmb %>% 
+  filter(Cancer.Type == "Melanoma") %>%
+  group_by(Sex) %>%
+  summarise(Promedio_tiempo = mean(Age.at.Which.Sequencing.was.Reported..Days., na.rm = TRUE))
+
 ```
 
 
@@ -526,7 +701,7 @@ Los gráficos generados se pueden guardar con la función ggsave(). También pod
 ===================================
 Es vuestro turno para trabajar con los datos.
 Os dejamos varias opciones.
-* Podéis seguir trabajando sobre el conjunto de datos "tmb_mskcc_2018_clinical_data.tsv".  
+* Podéis seguir trabajando sobre el conjunto de datos "tmb_mskcc_2018_clinical_data.tsv", "AML_cohort.tsv"  
 * R base incluye conjuntos de datos sobre los que trabajar, como el conjunto ToothGwroth. Estos conjuntos de datos se cargan con la función data().
 * Vuestros propios datos.
 
