@@ -936,6 +936,21 @@ Os dejamos varias opciones.
 * Vuestros propios datos.
 
 
+> Propuesta de ejercicio:
+```
+1. Describe el conjunto de datos: 
+- nº de filas 
+- nº de columnas
+- nombre de las columnas, 
+- ¿Cuales son las variables categóricas y sus categorias?.
+2. ¿Hay algún dato faltante (valor nulo) en tus datos?
+3. Filtrar el conjunto de datos: Filtros sencillos, filtros combinados
+4. ¿Qué nos puedes contar de tu conjunto de datos? 
+- media
+- mediana
+- valores máximos y mínimos
+Haz una figura (gráfico lineal, gráfico de cajas, gráfico de barras).
+```
 
 11. Cómo seguir aprendiendo por tu cuenta
 ========================================
